@@ -1,4 +1,4 @@
-StayEase - Fullstack Hostel & PG Management System
+# StayEase - Fullstack Hostel & PG Management System
 
 > **IP Java Semester 5 Hands-on Project**  
 > Built with **Java 21/26**, **Spring Boot 4 / 3**, **Apache Maven**, **REST API architecture**, and a **Modern Responsive Web UI**.
@@ -8,7 +8,7 @@ StayEase - Fullstack Hostel & PG Management System
 Project Overview
 StayEase is a complete fullstack digital Hostel and PG Management System. It allows hostel owners to list and manage rooms, track tenant applications and occupancy, manage monthly rental collections digitally, and resolve tenant complaints in real time.
 
-Core Features
+# Core Features
 1. **Dynamic Authentication & Registration**:
    - Register **unlimited new Tenants and new Owners** via Web UI or Postman.
    - Distinct **Owner** and **Tenant** dashboards.
@@ -32,7 +32,7 @@ Core Features
 
 ---
 
-Architecture & Code Structure
+# Architecture & Code Structure
 The backend follows the exact clean controller-service-entity-DTO pattern from your reference backend:
 
 ```
