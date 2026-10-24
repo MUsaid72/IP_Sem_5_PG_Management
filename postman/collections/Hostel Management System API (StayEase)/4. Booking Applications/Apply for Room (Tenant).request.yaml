@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:8080/api/applications/apply
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "tenantId": 1,
+        "roomId": 101,
+        "message": "Looking to move in starting next week for semester 5 classes."
+    }
+order: 1000

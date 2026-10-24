@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:8080/api/rooms/101
+method: GET
+order: 4000

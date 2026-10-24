@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "b3c9716e-44fa-4d1a-8b8d-93f5d5062a4d",
+		"name": "Hostel Management System API (StayEase)",
+		"description": "Comprehensive Postman collection for the IP Java Hostel & PG Management System. Covers Auth, Owners, Tenants, Rooms, Booking Applications, Monthly Rent Payments, and Complaint Ticketing.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication & Registration",
+			"item": [
+				{
+					"name": "Register New Tenant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aarav Mehta\",\n    \"email\": \"aarav@college.edu\",\n    \"phone\": \"+91 98888 77777\",\n    \"password\": \"password123\",\n    \"collegeOrCompany\": \"Computer Science Sem 5\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/register/tenant",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register",
+								"tenant"
+							]
+						}
+					}
+				},
+				{
+					"name": "Register New Owner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Suresh Verma\",\n    \"email\": \"suresh@hostel.com\",\n    \"phone\": \"+91 98111 55443\",\n    \"password\": \"password123\",\n    \"hostelName\": \"Greenfield Luxury PG\",\n    \"address\": \"Knowledge Park II, Greater Noida\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/register/owner",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register",
+								"owner"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login as Tenant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"aarav@college.edu\",\n    \"password\": \"password123\",\n    \"role\": \"TENANT\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login as Owner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"suresh@hostel.com\",\n    \"password\": \"password123\",\n    \"role\": \"OWNER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Owners & Tenants Directory",
+			"item": [
+				{
+					"name": "Get All Owners",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/owners",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"owners"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Tenants",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/tenants",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"tenants"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Tenant directly via /api/tenants",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rohan Gupta\",\n    \"email\": \"rohan@college.edu\",\n    \"phone\": \"+91 97777 66666\",\n    \"password\": \"password123\",\n    \"collegeOrCompany\": \"IT Sem 5\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/tenants",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"tenants"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Rooms Management",
+			"item": [
+				{
+					"name": "Get All Rooms",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/rooms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Available Rooms (Tenant Search)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/rooms/available",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rooms",
+								"available"
+							]
+						}
+					}
+				},
+				{
+					"name": "Add Room (Owner)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roomNumber\": \"E-501\",\n    \"roomType\": \"Single Sharing\",\n    \"rentAmount\": 10500.0,\n    \"securityDeposit\": 11000.0,\n    \"status\": \"AVAILABLE\",\n    \"amenities\": \"AC, High Speed Wi-Fi, Balcony, Attached Washroom\",\n    \"description\": \"Brand new 5th floor penthouse room with scenic campus view.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/rooms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Room by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/rooms/101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rooms",
+								"101"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Booking Applications",
+			"item": [
+				{
+					"name": "Apply for Room (Tenant)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantId\": 1,\n    \"roomId\": 101,\n    \"message\": \"Looking to move in starting next week for semester 5 classes.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/applications/apply",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"apply"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Applications (Owner)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve Application (Owner)",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "http://localhost:8080/api/applications/101/approve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"101",
+								"approve"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Rent & Digital Payments",
+			"item": [
+				{
+					"name": "Get Rent Financial Stats",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/rent/stats",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rent",
+								"stats"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Payment Records (Owner)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/rent/payments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rent",
+								"payments"
+							]
+						}
+					}
+				},
+				{
+					"name": "Pay Rent (Tenant)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantId\": 1,\n    \"amount\": 7500.0,\n    \"month\": \"October 2026\",\n    \"paymentMethod\": \"UPI\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/rent/pay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rent",
+								"pay"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Complaint Ticketing",
+			"item": [
+				{
+					"name": "File Complaint (Tenant)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenantId\": 1,\n    \"category\": \"Electrical\",\n    \"priority\": \"HIGH\",\n    \"title\": \"Study lamp socket sparking\",\n    \"description\": \"The switchboard next to the study table is sparking when plugged in.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/complaints",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"complaints"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Complaints (Owner)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/complaints",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"complaints"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Complaint Status (Owner)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"RESOLVED\",\n    \"ownerNotes\": \"Electrician replaced switch and safety fuse.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/complaints/501/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"complaints",
+								"501",
+								"status"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

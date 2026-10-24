@@ -1,0 +1,16 @@
+$kind: http-request
+url: http://localhost:8080/api/complaints
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "tenantId": 1,
+        "category": "Electrical",
+        "priority": "HIGH",
+        "title": "Study lamp socket sparking",
+        "description": "The switchboard next to the study table is sparking when plugged in."
+    }
+order: 1000

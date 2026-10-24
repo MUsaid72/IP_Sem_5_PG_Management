@@ -1,0 +1,15 @@
+$kind: http-request
+url: http://localhost:8080/api/rent/pay
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "tenantId": 1,
+        "amount": 7500.0,
+        "month": "October 2026",
+        "paymentMethod": "UPI"
+    }
+order: 3000

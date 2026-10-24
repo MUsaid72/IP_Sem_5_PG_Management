@@ -1,0 +1,16 @@
+$kind: http-request
+url: http://localhost:8080/api/auth/register/tenant
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "name": "Aarav Mehta",
+        "email": "aarav@college.edu",
+        "phone": "+91 98888 77777",
+        "password": "password123",
+        "collegeOrCompany": "Computer Science Sem 5"
+    }
+order: 1000

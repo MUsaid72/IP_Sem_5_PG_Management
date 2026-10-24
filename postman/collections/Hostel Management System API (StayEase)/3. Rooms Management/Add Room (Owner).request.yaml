@@ -1,0 +1,18 @@
+$kind: http-request
+url: http://localhost:8080/api/rooms
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "roomNumber": "E-501",
+        "roomType": "Single Sharing",
+        "rentAmount": 10500.0,
+        "securityDeposit": 11000.0,
+        "status": "AVAILABLE",
+        "amenities": "AC, High Speed Wi-Fi, Balcony, Attached Washroom",
+        "description": "Brand new 5th floor penthouse room with scenic campus view."
+    }
+order: 3000

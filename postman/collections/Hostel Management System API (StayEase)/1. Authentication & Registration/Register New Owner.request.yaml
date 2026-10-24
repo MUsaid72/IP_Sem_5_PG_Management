@@ -1,0 +1,17 @@
+$kind: http-request
+url: http://localhost:8080/api/auth/register/owner
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "name": "Suresh Verma",
+        "email": "suresh@hostel.com",
+        "phone": "+91 98111 55443",
+        "password": "password123",
+        "hostelName": "Greenfield Luxury PG",
+        "address": "Knowledge Park II, Greater Noida"
+    }
+order: 2000

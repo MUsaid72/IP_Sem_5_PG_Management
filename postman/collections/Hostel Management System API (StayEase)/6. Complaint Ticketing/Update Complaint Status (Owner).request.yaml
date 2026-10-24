@@ -1,0 +1,13 @@
+$kind: http-request
+url: http://localhost:8080/api/complaints/501/status
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "status": "RESOLVED",
+        "ownerNotes": "Electrician replaced switch and safety fuse."
+    }
+order: 3000

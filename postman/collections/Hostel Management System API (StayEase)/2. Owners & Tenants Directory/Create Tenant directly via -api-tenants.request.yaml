@@ -1,0 +1,17 @@
+$kind: http-request
+name: Create Tenant directly via /api/tenants
+url: http://localhost:8080/api/tenants
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "name": "Rohan Gupta",
+        "email": "rohan@college.edu",
+        "phone": "+91 97777 66666",
+        "password": "password123",
+        "collegeOrCompany": "IT Sem 5"
+    }
+order: 3000
