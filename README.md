@@ -5,7 +5,7 @@
 
 ---
 
-Project Overview
+**Project Overview**
 StayEase is a complete fullstack digital Hostel and PG Management System. It allows hostel owners to list and manage rooms, track tenant applications and occupancy, manage monthly rental collections digitally, and resolve tenant complaints in real time.
 
 # Core Features
