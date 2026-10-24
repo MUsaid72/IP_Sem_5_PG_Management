@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owners - StayEase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon"><i class="fas fa-building"></i></div>
+            <div class="brand-text">
+                <h2>StayEase</h2>
+                <span>Hostel Management</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main Menu</div>
+            <a href="index.html"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="owners.html" class="active"><i class="fas fa-user-tie"></i> Owners</a>
+            <a href="rooms.html"><i class="fas fa-door-open"></i> Rooms</a>
+            <a href="tenants.html"><i class="fas fa-users"></i> Tenants</a>
+            <div class="nav-label">Transactions</div>
+            <a href="rentpayments.html"><i class="fas fa-money-bill-wave"></i> Rent Payments</a>
+            <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> Complaints</a>
+        </nav>
+        <div class="sidebar-footer">
+            &copy; 2024 StayEase. All rights reserved.
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="top-header">
+            <div class="page-title"><i class="fas fa-user-tie"></i> Owner Management</div>
+            <div class="header-actions">
+                <div class="header-date"><i class="far fa-calendar-alt"></i> <span id="headerDate"></span></div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <div class="section-header">
+                <h2>All Owners</h2>
+                <button class="btn btn-primary" onclick="openAddOwnerModal()">
+                    <i class="fas fa-plus"></i> Add Owner
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ownersTableBody">
+                        <tr><td colspan="6"><div class="loading"><i class="fas fa-spinner"></i> Loading...</div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Owner Modal -->
+    <div class="modal-overlay" id="ownerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="ownerModalTitle">Add New Owner</h3>
+                <button class="modal-close" onclick="closeModal('ownerModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="ownerForm" onsubmit="event.preventDefault(); saveOwner();">
+                    <input type="hidden" id="ownerFormMode" value="add">
+                    <div class="form-group">
+                        <label>ID <span class="required">*</span></label>
+                        <input type="number" id="ownerId" class="form-control" placeholder="Enter owner ID" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Name <span class="required">*</span></label>
+                            <input type="text" id="ownerName" class="form-control" placeholder="Full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone <span class="required">*</span></label>
+                            <input type="text" id="ownerPhone" class="form-control" placeholder="Phone number" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" id="ownerEmail" class="form-control" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address <span class="required">*</span></label>
+                        <textarea id="ownerAddress" class="form-control" placeholder="Full address" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('ownerModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveOwner()"><i class="fas fa-save"></i> Save Owner</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOwners();
+            setupModalClose('ownerModal');
+        });
+    </script>
+</body>
+</html>

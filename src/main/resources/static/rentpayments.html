@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Payments - StayEase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon"><i class="fas fa-building"></i></div>
+            <div class="brand-text">
+                <h2>StayEase</h2>
+                <span>Hostel Management</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main Menu</div>
+            <a href="index.html"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="owners.html"><i class="fas fa-user-tie"></i> Owners</a>
+            <a href="rooms.html"><i class="fas fa-door-open"></i> Rooms</a>
+            <a href="tenants.html"><i class="fas fa-users"></i> Tenants</a>
+            <div class="nav-label">Transactions</div>
+            <a href="rentpayments.html" class="active"><i class="fas fa-money-bill-wave"></i> Rent Payments</a>
+            <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> Complaints</a>
+        </nav>
+        <div class="sidebar-footer">
+            &copy; 2024 StayEase. All rights reserved.
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="top-header">
+            <div class="page-title"><i class="fas fa-money-bill-wave"></i> Rent Payment Tracking</div>
+            <div class="header-actions">
+                <div class="header-date"><i class="far fa-calendar-alt"></i> <span id="headerDate"></span></div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <div class="section-header">
+                <h2>All Payments</h2>
+                <button class="btn btn-primary" onclick="openAddPaymentModal()">
+                    <i class="fas fa-plus"></i> Add Payment
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tenant ID</th>
+                            <th>Amount</th>
+                            <th>Month</th>
+                            <th>Payment Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentsTableBody">
+                        <tr><td colspan="7"><div class="loading"><i class="fas fa-spinner"></i> Loading...</div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="paymentModalTitle">Add New Payment</h3>
+                <button class="modal-close" onclick="closeModal('paymentModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm" onsubmit="event.preventDefault(); savePayment();">
+                    <input type="hidden" id="paymentFormMode" value="add">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ID <span class="required">*</span></label>
+                            <input type="number" id="paymentId" class="form-control" placeholder="Payment ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tenant ID <span class="required">*</span></label>
+                            <input type="number" id="paymentTenantId" class="form-control" placeholder="Tenant ID" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (₹) <span class="required">*</span></label>
+                            <input type="number" id="paymentAmount" class="form-control" placeholder="Payment amount" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Month <span class="required">*</span></label>
+                            <input type="text" id="paymentMonth" class="form-control" placeholder="e.g. January 2024" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Payment Date <span class="required">*</span></label>
+                            <input type="date" id="paymentDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status <span class="required">*</span></label>
+                            <select id="paymentStatus" class="form-control" required>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Overdue">Overdue</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('paymentModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="savePayment()"><i class="fas fa-save"></i> Save Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRentPayments();
+            setupModalClose('paymentModal');
+        });
+    </script>
+</body>
+</html>

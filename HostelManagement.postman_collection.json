@@ -1,0 +1,260 @@
+{
+  "info": {
+    "_postman_id": "c1f7b889-4091-4c10-91a5-3b984fa57211",
+    "name": "Hostel Management System API",
+    "description": "Postman collection for StayEase Hostel/PG Management System (IP Java Session)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Owners",
+      "item": [
+        {
+          "name": "Add Owner",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Ramesh Sharma\",\n  \"email\": \"ramesh@example.com\",\n  \"phone\": \"9876543210\",\n  \"address\": \"42 Green Park, Delhi\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/owners", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["owners"] }
+          }
+        },
+        {
+          "name": "Get All Owners",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/owners", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["owners"] }
+          }
+        },
+        {
+          "name": "Get Owner By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/owners/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["owners", "1"] }
+          }
+        },
+        {
+          "name": "Update Owner",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ramesh K. Sharma\",\n  \"email\": \"ramesh.sharma@example.com\",\n  \"phone\": \"9876543210\",\n  \"address\": \"42 Green Park Extension, Delhi\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/owners/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["owners", "1"] }
+          }
+        },
+        {
+          "name": "Delete Owner",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:8080/owners/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["owners", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rooms",
+      "item": [
+        {
+          "name": "Add Room",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 101,\n  \"ownerId\": 1,\n  \"roomNumber\": \"A-101\",\n  \"type\": \"Single\",\n  \"rentAmount\": 8500.0,\n  \"status\": \"Available\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/rooms", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rooms"] }
+          }
+        },
+        {
+          "name": "Get All Rooms",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/rooms", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rooms"] }
+          }
+        },
+        {
+          "name": "Get Room By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/rooms/101", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rooms", "101"] }
+          }
+        },
+        {
+          "name": "Update Room",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ownerId\": 1,\n  \"roomNumber\": \"A-101\",\n  \"type\": \"Single\",\n  \"rentAmount\": 9000.0,\n  \"status\": \"Occupied\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/rooms/101", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rooms", "101"] }
+          }
+        },
+        {
+          "name": "Delete Room",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:8080/rooms/101", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rooms", "101"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tenants",
+      "item": [
+        {
+          "name": "Add / Apply Tenant",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 201,\n  \"name\": \"Amit Verma\",\n  \"email\": \"amit@student.com\",\n  \"phone\": \"9123456789\",\n  \"roomId\": 101,\n  \"status\": \"Applied\",\n  \"applicationDate\": \"2026-10-24\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/tenants", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["tenants"] }
+          }
+        },
+        {
+          "name": "Get All Tenants",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/tenants", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["tenants"] }
+          }
+        },
+        {
+          "name": "Get Tenant By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/tenants/201", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["tenants", "201"] }
+          }
+        },
+        {
+          "name": "Update / Approve Tenant",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Amit Verma\",\n  \"email\": \"amit@student.com\",\n  \"phone\": \"9123456789\",\n  \"roomId\": 101,\n  \"status\": \"Approved\",\n  \"applicationDate\": \"2026-10-24\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/tenants/201", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["tenants", "201"] }
+          }
+        },
+        {
+          "name": "Delete Tenant",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:8080/tenants/201", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["tenants", "201"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rent Payments",
+      "item": [
+        {
+          "name": "Record Rent Payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 301,\n  \"tenantId\": 201,\n  \"amount\": 8500.0,\n  \"month\": \"October 2026\",\n  \"paymentDate\": \"2026-10-24\",\n  \"status\": \"Paid\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/rentpayments", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rentpayments"] }
+          }
+        },
+        {
+          "name": "Get All Rent Payments",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/rentpayments", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rentpayments"] }
+          }
+        },
+        {
+          "name": "Get Rent Payment By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/rentpayments/301", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rentpayments", "301"] }
+          }
+        },
+        {
+          "name": "Update Rent Payment",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenantId\": 201,\n  \"amount\": 8500.0,\n  \"month\": \"October 2026\",\n  \"paymentDate\": \"2026-10-24\",\n  \"status\": \"Paid\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/rentpayments/301", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rentpayments", "301"] }
+          }
+        },
+        {
+          "name": "Delete Rent Payment",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:8080/rentpayments/301", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["rentpayments", "301"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complaints",
+      "item": [
+        {
+          "name": "Create Complaint",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 401,\n  \"tenantId\": 201,\n  \"title\": \"AC Not Cooling\",\n  \"description\": \"Air conditioner in room A-101 is not cooling properly.\",\n  \"status\": \"Open\",\n  \"createdDate\": \"2026-10-24\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/complaints", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["complaints"] }
+          }
+        },
+        {
+          "name": "Get All Complaints",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/complaints", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["complaints"] }
+          }
+        },
+        {
+          "name": "Get Complaint By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/complaints/401", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["complaints", "401"] }
+          }
+        },
+        {
+          "name": "Update Complaint Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenantId\": 201,\n  \"title\": \"AC Not Cooling\",\n  \"description\": \"Technician scheduled for inspection.\",\n  \"status\": \"InProgress\",\n  \"createdDate\": \"2026-10-24\"\n}"
+            },
+            "url": { "raw": "http://localhost:8080/complaints/401", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["complaints", "401"] }
+          }
+        },
+        {
+          "name": "Delete Complaint",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "http://localhost:8080/complaints/401", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["complaints", "401"] }
+          }
+        }
+      ]
+    }
+  ]
+}

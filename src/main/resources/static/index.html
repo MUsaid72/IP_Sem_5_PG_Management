@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase - Hostel Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon"><i class="fas fa-building"></i></div>
+            <div class="brand-text">
+                <h2>StayEase</h2>
+                <span>Hostel Management</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main Menu</div>
+            <a href="index.html" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="owners.html"><i class="fas fa-user-tie"></i> Owners</a>
+            <a href="rooms.html"><i class="fas fa-door-open"></i> Rooms</a>
+            <a href="tenants.html"><i class="fas fa-users"></i> Tenants</a>
+            <div class="nav-label">Transactions</div>
+            <a href="rentpayments.html"><i class="fas fa-money-bill-wave"></i> Rent Payments</a>
+            <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> Complaints</a>
+        </nav>
+        <div class="sidebar-footer">
+            &copy; 2024 StayEase. All rights reserved.
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="page-title"><i class="fas fa-th-large"></i> Dashboard</div>
+            <div class="header-actions">
+                <div class="header-date"><i class="far fa-calendar-alt"></i> <span id="headerDate"></span></div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <h1>Welcome to StayEase</h1>
+                <p>Your complete hostel & PG management solution. Manage owners, rooms, tenants, payments, and complaints all in one place.</p>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <a href="owners.html" class="dash-card" style="text-decoration:none;">
+                    <div class="card-icon owners"><i class="fas fa-user-tie"></i></div>
+                    <div class="card-info">
+                        <h3 id="dashOwnerCount">0</h3>
+                        <p>Total Owners</p>
+                    </div>
+                </a>
+                <a href="rooms.html" class="dash-card" style="text-decoration:none;">
+                    <div class="card-icon rooms"><i class="fas fa-door-open"></i></div>
+                    <div class="card-info">
+                        <h3 id="dashRoomCount">0</h3>
+                        <p>Total Rooms</p>
+                    </div>
+                </a>
+                <a href="tenants.html" class="dash-card" style="text-decoration:none;">
+                    <div class="card-icon tenants"><i class="fas fa-users"></i></div>
+                    <div class="card-info">
+                        <h3 id="dashTenantCount">0</h3>
+                        <p>Total Tenants</p>
+                    </div>
+                </a>
+                <a href="rentpayments.html" class="dash-card" style="text-decoration:none;">
+                    <div class="card-icon payments"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="card-info">
+                        <h3 id="dashPaymentCount">0</h3>
+                        <p>Rent Payments</p>
+                    </div>
+                </a>
+                <a href="complaints.html" class="dash-card" style="text-decoration:none;">
+                    <div class="card-icon complaints"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="card-info">
+                        <h3 id="dashComplaintCount">0</h3>
+                        <p>Complaints</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <h3><i class="fas fa-door-open"></i> Room Overview</h3>
+                    <ul class="stat-list">
+                        <li>
+                            <span><span class="badge badge-success">Available</span></span>
+                            <strong id="availableRooms">0</strong>
+                        </li>
+                        <li>
+                            <span><span class="badge badge-danger">Occupied</span></span>
+                            <strong id="occupiedRooms">0</strong>
+                        </li>
+                        <li>
+                            <span><span class="badge badge-warning">Maintenance</span></span>
+                            <strong id="maintenanceRooms">0</strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-money-bill-wave"></i> Payment Status</h3>
+                    <ul class="stat-list">
+                        <li>
+                            <span><span class="badge badge-success">Paid</span></span>
+                            <strong id="paidPayments">0</strong>
+                        </li>
+                        <li>
+                            <span><span class="badge badge-warning">Pending</span></span>
+                            <strong id="pendingPayments">0</strong>
+                        </li>
+                        <li>
+                            <span><span class="badge badge-danger">Overdue</span></span>
+                            <strong id="overduePayments">0</strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-exclamation-circle"></i> Complaint Tracker</h3>
+                    <ul class="stat-list">
+                        <li>
+                            <span><span class="badge badge-primary">Open</span></span>
+                            <strong id="openComplaints">0</strong>
+                        </li>
+                        <li>
+                            <span><span class="badge badge-warning">In Progress</span></span>
+                            <strong id="inProgressComplaints">0</strong>
+                        </li>
+                        <li>
+                            <span><span class="badge badge-success">Resolved</span></span>
+                            <strong id="resolvedComplaints">0</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboard();
+        });
+    </script>
+</body>
+</html>
