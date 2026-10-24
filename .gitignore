@@ -33,6 +33,12 @@ target/
 ### Postman local workspace cache ###
 .postman/
 
+### Node / Frontend ###
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
 ### OS files ###
 Thumbs.db
 Desktop.ini
