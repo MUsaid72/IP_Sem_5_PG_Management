@@ -22,6 +22,17 @@ import {
 export default function TenantDashboard({ onToast }) {
   const { user, syncTrigger } = useAuth();
   const [activeTab, setActiveTab] = useState('rooms');
+  const [tenancyBadgeDismissed, setTenancyBadgeDismissed] = useState(() => {
+    return sessionStorage.getItem('tenancy_badge_dismissed_' + (user?.id || 1)) === 'true';
+  });
+
+  const handleTabChange = (nextTab) => {
+    if (activeTab === 'myroom' && nextTab !== 'myroom') {
+      setTenancyBadgeDismissed(true);
+      sessionStorage.setItem('tenancy_badge_dismissed_' + (user?.id || 1), 'true');
+    }
+    setActiveTab(nextTab);
+  };
 
   // Data states
   const [rooms, setRooms] = useState([]);
@@ -105,7 +116,7 @@ export default function TenantDashboard({ onToast }) {
       {/* Tabs */}
       <div className="flex border-b border-slate-200 space-x-6 text-sm font-semibold overflow-x-auto">
         <button
-          onClick={() => setActiveTab('rooms')}
+          onClick={() => handleTabChange('rooms')}
           className={`py-3 px-1 border-b-2 flex items-center space-x-2 whitespace-nowrap ${
             activeTab === 'rooms' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
@@ -115,14 +126,14 @@ export default function TenantDashboard({ onToast }) {
         </button>
 
         <button
-          onClick={() => setActiveTab('myroom')}
+          onClick={() => handleTabChange('myroom')}
           className={`py-3 px-1 border-b-2 flex items-center space-x-2 whitespace-nowrap ${
             activeTab === 'myroom' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <Bed className="w-4 h-4" />
           <span>My Tenancy & Applications</span>
-          {myApplications.length > 0 && (
+          {!tenancyBadgeDismissed && myApplications.length > 0 && activeTab !== 'myroom' && (
             <span className="px-2 py-0.5 text-xs bg-emerald-100 text-emerald-800 rounded-full font-bold">
               {myApplications.length}
             </span>
@@ -130,7 +141,7 @@ export default function TenantDashboard({ onToast }) {
         </button>
 
         <button
-          onClick={() => setActiveTab('rent')}
+          onClick={() => handleTabChange('rent')}
           className={`py-3 px-1 border-b-2 flex items-center space-x-2 whitespace-nowrap ${
             activeTab === 'rent' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
@@ -140,7 +151,7 @@ export default function TenantDashboard({ onToast }) {
         </button>
 
         <button
-          onClick={() => setActiveTab('complaints')}
+          onClick={() => handleTabChange('complaints')}
           className={`py-3 px-1 border-b-2 flex items-center space-x-2 whitespace-nowrap ${
             activeTab === 'complaints' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
@@ -233,7 +244,7 @@ export default function TenantDashboard({ onToast }) {
                   Browse the "Available Room Listings" tab to apply for a room. Once approved by the owner, your allocated room details will show here.
                 </p>
                 <button
-                  onClick={() => setActiveTab('rooms')}
+                  onClick={() => handleTabChange('rooms')}
                   className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition"
                 >
                   Browse Available Rooms
@@ -460,7 +471,7 @@ export default function TenantDashboard({ onToast }) {
         onClose={() => setSelectedRoomForApply(null)}
         onSuccess={(msg) => {
           onToast(msg, 'success');
-          setActiveTab('myroom');
+          handleTabChange('myroom');
         }}
       />
 

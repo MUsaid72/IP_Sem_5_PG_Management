@@ -11,7 +11,6 @@ public class HostelManagementApplication {
         System.out.println("==================================================================");
         System.out.println(" Hostel & PG Management System Backend Started Successfully! ");
         System.out.println(" Web UI & Dashboard: http://localhost:8080/                      ");
-        System.out.println(" REST API Base:      http://localhost:8080/api                   ");
         System.out.println("==================================================================");
     }
 }
