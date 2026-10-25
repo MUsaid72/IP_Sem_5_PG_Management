@@ -33,6 +33,12 @@ target/
 ### Postman local workspace cache ###
 .postman/
 
+### Secrets & Local Environment Config ###
+*.local.properties
+*application-local.properties
+.env
+.env.local
+
 ### Node / Frontend ###
 node_modules/
 frontend/node_modules/
