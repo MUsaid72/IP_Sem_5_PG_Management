@@ -1,16 +1,36 @@
 package com.hostel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "complaints")
 public class ComplaintEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private int tenantId;
     private String tenantName;
     private String roomNumber;
+
+    @Column(length = 100)
     private String category; // Plumbing, Electrical, Wi-Fi, Food/Mess, Cleanliness, Noise, Other
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(length = 2000)
     private String description;
+
+    @Column(length = 30)
     private String priority; // LOW, MEDIUM, HIGH, URGENT
+
+    @Column(length = 30)
     private String status; // OPEN, IN_PROGRESS, RESOLVED
+
+    @Column(length = 2000)
     private String ownerNotes;
+
     private String createdDate;
     private String resolvedDate;
 

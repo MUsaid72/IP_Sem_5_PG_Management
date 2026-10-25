@@ -4,19 +4,22 @@ import com.hostel.dto.TenantApplicationDTO;
 import com.hostel.entity.RoomEntity;
 import com.hostel.entity.TenantApplicationEntity;
 import com.hostel.entity.TenantEntity;
+import com.hostel.repository.TenantApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicationService {
 
-    private final List<TenantApplicationEntity> applicationList = new ArrayList<>();
-    private int nextId = 103;
+    @Autowired
+    private TenantApplicationRepository applicationRepository;
 
     @Autowired
     private RoomService roomService;
@@ -24,17 +27,7 @@ public class ApplicationService {
     @Autowired
     private TenantService tenantService;
 
-    public ApplicationService() {
-        // Sample pre-seeded application
-        applicationList.add(new TenantApplicationEntity(101, 1, "Rahul Sharma", "tenant@college.edu",
-                "+91 98111 22334", 102, "B-201", 7500.0,
-                "Requesting accommodation for academic year 2026-27.", "APPROVED", "15 Oct 2026"));
-
-        applicationList.add(new TenantApplicationEntity(102, 2, "Priya Patel", "priya@college.edu",
-                "+91 98222 33445", 103, "C-302", 6500.0,
-                "Need quiet room for semester exam preparation.", "APPROVED", "18 Oct 2026"));
-    }
-
+    @Transactional
     public TenantApplicationDTO applyForRoom(TenantApplicationDTO dto) {
         if (dto.getRoomId() == null) {
             throw new IllegalArgumentException("Room ID is required.");
@@ -54,7 +47,6 @@ public class ApplicationService {
         String tenantPhone = tenant != null ? tenant.getPhone() : (dto.getTenantPhone() != null ? dto.getTenantPhone() : "N/A");
 
         TenantApplicationEntity entity = new TenantApplicationEntity();
-        entity.setId(nextId++);
         entity.setTenantId(tenantId);
         entity.setTenantName(tenantName);
         entity.setTenantEmail(tenantEmail);
@@ -66,13 +58,13 @@ public class ApplicationService {
         entity.setStatus("PENDING");
         entity.setApplicationDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy")));
 
-        applicationList.add(0, entity);
-        return convertToDTO(entity);
+        TenantApplicationEntity saved = applicationRepository.save(entity);
+        return convertToDTO(saved);
     }
 
     public List<TenantApplicationDTO> getAllApplications() {
         List<TenantApplicationDTO> dtoList = new ArrayList<>();
-        for (TenantApplicationEntity entity : applicationList) {
+        for (TenantApplicationEntity entity : applicationRepository.findAll()) {
             dtoList.add(convertToDTO(entity));
         }
         return dtoList;
@@ -80,42 +72,45 @@ public class ApplicationService {
 
     public List<TenantApplicationDTO> getApplicationsByTenant(int tenantId) {
         List<TenantApplicationDTO> dtoList = new ArrayList<>();
-        for (TenantApplicationEntity entity : applicationList) {
-            if (entity.getTenantId() == tenantId) {
-                dtoList.add(convertToDTO(entity));
-            }
+        for (TenantApplicationEntity entity : applicationRepository.findByTenantId(tenantId)) {
+            dtoList.add(convertToDTO(entity));
         }
         return dtoList;
     }
 
+    @Transactional
     public TenantApplicationDTO approveApplication(int applicationId) {
-        for (TenantApplicationEntity entity : applicationList) {
-            if (entity.getId() == applicationId) {
-                entity.setStatus("APPROVED");
+        Optional<TenantApplicationEntity> opt = applicationRepository.findById(applicationId);
+        if (opt.isPresent()) {
+            TenantApplicationEntity entity = opt.get();
+            entity.setStatus("APPROVED");
 
-                // 1. Assign room and update its occupancy status to OCCUPIED (so room listing shows unavailable)
-                roomService.assignRoomToTenant(entity.getRoomId(), entity.getTenantId(), entity.getTenantName());
+            // 1. Assign room and update its occupancy status to OCCUPIED
+            roomService.assignRoomToTenant(entity.getRoomId(), entity.getTenantId(), entity.getTenantName());
 
-                // 2. Update tenant's assigned room and rent
-                tenantService.updateRoomAssignment(entity.getTenantId(), entity.getRoomId(), entity.getRoomNumber(), entity.getRentAmount());
+            // 2. Update tenant's assigned room and rent
+            tenantService.updateRoomAssignment(entity.getTenantId(), entity.getRoomId(), entity.getRoomNumber(), entity.getRentAmount());
 
-                return convertToDTO(entity);
-            }
+            TenantApplicationEntity saved = applicationRepository.save(entity);
+            return convertToDTO(saved);
         }
         return null;
     }
 
+    @Transactional
     public TenantApplicationDTO rejectApplication(int applicationId) {
-        for (TenantApplicationEntity entity : applicationList) {
-            if (entity.getId() == applicationId) {
-                entity.setStatus("REJECTED");
-                return convertToDTO(entity);
-            }
+        Optional<TenantApplicationEntity> opt = applicationRepository.findById(applicationId);
+        if (opt.isPresent()) {
+            TenantApplicationEntity entity = opt.get();
+            entity.setStatus("REJECTED");
+            TenantApplicationEntity saved = applicationRepository.save(entity);
+            return convertToDTO(saved);
         }
         return null;
     }
 
     public TenantApplicationDTO convertToDTO(TenantApplicationEntity entity) {
+        if (entity == null) return null;
         TenantApplicationDTO dto = new TenantApplicationDTO();
         dto.setId(entity.getId());
         dto.setTenantId(entity.getTenantId());

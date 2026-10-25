@@ -1,10 +1,13 @@
 package com.hostel.service;
 
 import com.hostel.dto.RentPaymentDTO;
+import com.hostel.dto.TenantDTO;
 import com.hostel.entity.RentPaymentEntity;
 import com.hostel.entity.TenantEntity;
+import com.hostel.repository.RentPaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,24 +16,13 @@ import java.util.*;
 @Service
 public class RentService {
 
-    private final List<RentPaymentEntity> paymentList = new ArrayList<>();
-    private int nextId = 1004;
+    @Autowired
+    private RentPaymentRepository paymentRepository;
 
     @Autowired
     private TenantService tenantService;
 
-    public RentService() {
-        // Pre-seeded rent payments
-        paymentList.add(new RentPaymentEntity(1001, 1, "Rahul Sharma", 102, "B-201",
-                7500.0, "August 2026", "02 Aug 2026", "UPI", "TXN-202608-9843", "PAID"));
-
-        paymentList.add(new RentPaymentEntity(1002, 1, "Rahul Sharma", 102, "B-201",
-                7500.0, "September 2026", "03 Sep 2026", "UPI", "TXN-202609-1123", "PAID"));
-
-        paymentList.add(new RentPaymentEntity(1003, 1, "Rahul Sharma", 102, "B-201",
-                7500.0, "October 2026", "05 Oct 2026", "Net Banking", "TXN-202610-4491", "PAID"));
-    }
-
+    @Transactional
     public RentPaymentDTO payRent(RentPaymentDTO dto) {
         int tenantId = dto.getTenantId() != null ? dto.getTenantId() : 1;
         TenantEntity tenant = tenantService.getTenantEntityById(tenantId);
@@ -40,7 +32,6 @@ public class RentService {
         double amount = dto.getAmount() != null && dto.getAmount() > 0 ? dto.getAmount() : (tenant != null && tenant.getMonthlyRent() > 0 ? tenant.getMonthlyRent() : 7500.0);
 
         RentPaymentEntity entity = new RentPaymentEntity();
-        entity.setId(nextId++);
         entity.setTenantId(tenantId);
         entity.setTenantName(tenantName);
         entity.setRoomId(roomId);
@@ -52,19 +43,19 @@ public class RentService {
         entity.setTransactionId("TXN-" + System.currentTimeMillis() % 10000000);
         entity.setStatus("PAID");
 
-        paymentList.add(0, entity);
+        RentPaymentEntity saved = paymentRepository.save(entity);
 
         // Update tenant status to PAID
         if (tenant != null) {
             tenantService.updateRentStatus(tenant.getId(), "PAID");
         }
 
-        return convertToDTO(entity);
+        return convertToDTO(saved);
     }
 
     public List<RentPaymentDTO> getAllPayments() {
         List<RentPaymentDTO> dtoList = new ArrayList<>();
-        for (RentPaymentEntity entity : paymentList) {
+        for (RentPaymentEntity entity : paymentRepository.findAll()) {
             dtoList.add(convertToDTO(entity));
         }
         return dtoList;
@@ -72,10 +63,8 @@ public class RentService {
 
     public List<RentPaymentDTO> getPaymentsByTenant(int tenantId) {
         List<RentPaymentDTO> dtoList = new ArrayList<>();
-        for (RentPaymentEntity entity : paymentList) {
-            if (entity.getTenantId() == tenantId) {
-                dtoList.add(convertToDTO(entity));
-            }
+        for (RentPaymentEntity entity : paymentRepository.findByTenantId(tenantId)) {
+            dtoList.add(convertToDTO(entity));
         }
         return dtoList;
     }
@@ -83,7 +72,7 @@ public class RentService {
     public Map<String, Object> getRentStats() {
         double totalCollected = 0.0;
         int paidCount = 0;
-        for (RentPaymentEntity entity : paymentList) {
+        for (RentPaymentEntity entity : paymentRepository.findAll()) {
             if ("PAID".equalsIgnoreCase(entity.getStatus())) {
                 totalCollected += entity.getAmount();
                 paidCount++;
@@ -92,9 +81,9 @@ public class RentService {
 
         double totalPending = 0.0;
         int pendingTenantsCount = 0;
-        for (TenantEntity tenant : tenantService.getAllTenants().stream().map(tenantService::convertToEntity).toList()) {
+        for (TenantDTO tenant : tenantService.getAllTenants()) {
             if ("DUE".equalsIgnoreCase(tenant.getRentStatus()) || "OVERDUE".equalsIgnoreCase(tenant.getRentStatus())) {
-                totalPending += tenant.getMonthlyRent();
+                totalPending += (tenant.getMonthlyRent() != null ? tenant.getMonthlyRent() : 0.0);
                 pendingTenantsCount++;
             }
         }
@@ -108,6 +97,7 @@ public class RentService {
     }
 
     public RentPaymentDTO convertToDTO(RentPaymentEntity entity) {
+        if (entity == null) return null;
         RentPaymentDTO dto = new RentPaymentDTO();
         dto.setId(entity.getId());
         dto.setTenantId(entity.getTenantId());

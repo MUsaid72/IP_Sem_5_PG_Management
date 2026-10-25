@@ -1,15 +1,32 @@
 package com.hostel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tenants")
 public class TenantEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(length = 20)
     private String phone;
+
+    @Column(nullable = false)
     private String password;
+
     private String collegeOrCompany;
     private Integer assignedRoomId;
     private String assignedRoomNumber;
     private double monthlyRent;
+
+    @Column(length = 20)
     private String rentStatus; // PAID, DUE, OVERDUE
 
     public TenantEntity() {

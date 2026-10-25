@@ -2,96 +2,83 @@ package com.hostel.service;
 
 import com.hostel.dto.OwnerDTO;
 import com.hostel.entity.OwnerEntity;
+import com.hostel.repository.OwnerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OwnerService {
 
-    private final List<OwnerEntity> ownerList = new ArrayList<>();
-    private int nextId = 2;
-
-    public OwnerService() {
-        // Pre-seeded default owner for demo
-        ownerList.add(new OwnerEntity(1, "Vikram Malhotra", "owner@hostel.com", "+91 98765 43210",
-                "password123", "Shree Sai Royal PG & Hostels", "Plot 42, Knowledge Park III, Greater Noida"));
-    }
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     public List<OwnerDTO> getAllOwners() {
         List<OwnerDTO> dtoList = new ArrayList<>();
-        for (OwnerEntity entity : ownerList) {
+        for (OwnerEntity entity : ownerRepository.findAll()) {
             dtoList.add(convertToDTO(entity));
         }
         return dtoList;
     }
 
     public OwnerDTO getOwnerById(int id) {
-        for (OwnerEntity entity : ownerList) {
-            if (entity.getId() == id) {
-                return convertToDTO(entity);
-            }
-        }
-        return null;
+        return ownerRepository.findById(id).map(this::convertToDTO).orElse(null);
     }
 
     public OwnerEntity getOwnerEntityById(int id) {
-        for (OwnerEntity entity : ownerList) {
-            if (entity.getId() == id) {
-                return entity;
-            }
-        }
-        return null;
+        return ownerRepository.findById(id).orElse(null);
     }
 
     public OwnerEntity getOwnerByEmail(String email) {
         if (email == null) return null;
-        for (OwnerEntity entity : ownerList) {
-            if (entity.getEmail() != null && entity.getEmail().equalsIgnoreCase(email.trim())) {
-                return entity;
-            }
-        }
-        return null;
+        return ownerRepository.findByEmail(email.trim()).orElse(null);
     }
 
+    @Transactional
     public OwnerDTO addOwner(OwnerDTO dto) {
         OwnerEntity entity = convertToEntity(dto);
+        // Clear manual id if 0 so JPA / MySQL auto-generates ID
         if (entity.getId() <= 0) {
-            entity.setId(nextId++);
+            entity.setId(0);
         }
-        ownerList.add(entity);
-        return convertToDTO(entity);
+        OwnerEntity saved = ownerRepository.save(entity);
+        return convertToDTO(saved);
     }
 
+    @Transactional
     public OwnerDTO updateOwner(int id, OwnerDTO dto) {
-        for (OwnerEntity entity : ownerList) {
-            if (entity.getId() == id) {
-                if (dto.getName() != null) entity.setName(dto.getName());
-                if (dto.getEmail() != null) entity.setEmail(dto.getEmail());
-                if (dto.getPhone() != null) entity.setPhone(dto.getPhone());
-                if (dto.getHostelName() != null) entity.setHostelName(dto.getHostelName());
-                if (dto.getAddress() != null) entity.setAddress(dto.getAddress());
-                if (dto.getPassword() != null && !dto.getPassword().isEmpty() && !dto.getPassword().equals("******")) {
-                    entity.setPassword(dto.getPassword());
-                }
-                return convertToDTO(entity);
+        Optional<OwnerEntity> opt = ownerRepository.findById(id);
+        if (opt.isPresent()) {
+            OwnerEntity entity = opt.get();
+            if (dto.getName() != null) entity.setName(dto.getName());
+            if (dto.getEmail() != null) entity.setEmail(dto.getEmail());
+            if (dto.getPhone() != null) entity.setPhone(dto.getPhone());
+            if (dto.getHostelName() != null) entity.setHostelName(dto.getHostelName());
+            if (dto.getAddress() != null) entity.setAddress(dto.getAddress());
+            if (dto.getPassword() != null && !dto.getPassword().isEmpty() && !dto.getPassword().equals("******")) {
+                entity.setPassword(dto.getPassword());
             }
+            OwnerEntity saved = ownerRepository.save(entity);
+            return convertToDTO(saved);
         }
         return null;
     }
 
+    @Transactional
     public String deleteOwner(int id) {
-        for (OwnerEntity entity : ownerList) {
-            if (entity.getId() == id) {
-                ownerList.remove(entity);
-                return "Owner deleted successfully";
-            }
+        if (ownerRepository.existsById(id)) {
+            ownerRepository.deleteById(id);
+            return "Owner deleted successfully";
         }
         return "Owner not found";
     }
 
     public OwnerDTO convertToDTO(OwnerEntity entity) {
+        if (entity == null) return null;
         OwnerDTO dto = new OwnerDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
@@ -104,8 +91,11 @@ public class OwnerService {
     }
 
     public OwnerEntity convertToEntity(OwnerDTO dto) {
+        if (dto == null) return null;
         OwnerEntity entity = new OwnerEntity();
-        entity.setId(dto.getId() != null ? dto.getId() : 0);
+        if (dto.getId() != null && dto.getId() > 0) {
+            entity.setId(dto.getId());
+        }
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail() != null ? dto.getEmail().trim() : null);
         entity.setPhone(dto.getPhone());

@@ -1,7 +1,14 @@
 package com.hostel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "rent_payments")
 public class RentPaymentEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private int tenantId;
     private String tenantName;
     private int roomId;
@@ -11,6 +18,8 @@ public class RentPaymentEntity {
     private String paymentDate;
     private String paymentMethod; // UPI, Net Banking, Cash, Card
     private String transactionId;
+
+    @Column(length = 30)
     private String status; // PAID, PENDING, FAILED
 
     public RentPaymentEntity() {

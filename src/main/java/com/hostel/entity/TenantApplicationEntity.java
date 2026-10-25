@@ -1,7 +1,14 @@
 package com.hostel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tenant_applications")
 public class TenantApplicationEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private int tenantId;
     private String tenantName;
     private String tenantEmail;
@@ -9,8 +16,13 @@ public class TenantApplicationEntity {
     private int roomId;
     private String roomNumber;
     private double rentAmount;
+
+    @Column(length = 1000)
     private String message;
+
+    @Column(length = 30)
     private String status; // PENDING, APPROVED, REJECTED
+
     private String applicationDate;
 
     public TenantApplicationEntity() {

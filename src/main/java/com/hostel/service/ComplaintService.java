@@ -3,38 +3,27 @@ package com.hostel.service;
 import com.hostel.dto.ComplaintDTO;
 import com.hostel.entity.ComplaintEntity;
 import com.hostel.entity.TenantEntity;
+import com.hostel.repository.ComplaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ComplaintService {
 
-    private final List<ComplaintEntity> complaintList = new ArrayList<>();
-    private int nextId = 503;
+    @Autowired
+    private ComplaintRepository complaintRepository;
 
     @Autowired
     private TenantService tenantService;
 
-    public ComplaintService() {
-        // Pre-seeded complaints for immediate showcase
-        complaintList.add(new ComplaintEntity(501, 2, "Priya Patel", "C-302",
-                "Wi-Fi", "Intermittent Wi-Fi Disconnection",
-                "High latency and packet drops in Room C-302 during evening hours, affecting project submission.",
-                "MEDIUM", "OPEN", "Pending technician visit scheduled for Monday.",
-                "23 Oct 2026", null));
-
-        complaintList.add(new ComplaintEntity(502, 1, "Rahul Sharma", "B-201",
-                "Plumbing", "Bathroom Washbasin Valve Leaking",
-                "Water dripping slowly from the main basin valve.",
-                "HIGH", "RESOLVED", "Plumber replaced the internal washer and tested pressure.",
-                "20 Oct 2026", "21 Oct 2026"));
-    }
-
+    @Transactional
     public ComplaintDTO fileComplaint(ComplaintDTO dto) {
         int tenantId = dto.getTenantId() != null ? dto.getTenantId() : 1;
         TenantEntity tenant = tenantService.getTenantEntityById(tenantId);
@@ -42,7 +31,6 @@ public class ComplaintService {
         String roomNumber = tenant != null && tenant.getAssignedRoomNumber() != null ? tenant.getAssignedRoomNumber() : (dto.getRoomNumber() != null ? dto.getRoomNumber() : "N/A");
 
         ComplaintEntity entity = new ComplaintEntity();
-        entity.setId(nextId++);
         entity.setTenantId(tenantId);
         entity.setTenantName(tenantName);
         entity.setRoomNumber(roomNumber);
@@ -55,13 +43,13 @@ public class ComplaintService {
         entity.setCreatedDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy")));
         entity.setResolvedDate(null);
 
-        complaintList.add(0, entity);
-        return convertToDTO(entity);
+        ComplaintEntity saved = complaintRepository.save(entity);
+        return convertToDTO(saved);
     }
 
     public List<ComplaintDTO> getAllComplaints() {
         List<ComplaintDTO> dtoList = new ArrayList<>();
-        for (ComplaintEntity entity : complaintList) {
+        for (ComplaintEntity entity : complaintRepository.findAll()) {
             dtoList.add(convertToDTO(entity));
         }
         return dtoList;
@@ -69,40 +57,36 @@ public class ComplaintService {
 
     public List<ComplaintDTO> getComplaintsByTenant(int tenantId) {
         List<ComplaintDTO> dtoList = new ArrayList<>();
-        for (ComplaintEntity entity : complaintList) {
-            if (entity.getTenantId() == tenantId) {
-                dtoList.add(convertToDTO(entity));
-            }
+        for (ComplaintEntity entity : complaintRepository.findByTenantId(tenantId)) {
+            dtoList.add(convertToDTO(entity));
         }
         return dtoList;
     }
 
     public ComplaintDTO getComplaintById(int id) {
-        for (ComplaintEntity entity : complaintList) {
-            if (entity.getId() == id) {
-                return convertToDTO(entity);
-            }
-        }
-        return null;
+        return complaintRepository.findById(id).map(this::convertToDTO).orElse(null);
     }
 
+    @Transactional
     public ComplaintDTO updateComplaintStatus(int id, String status, String ownerNotes) {
-        for (ComplaintEntity entity : complaintList) {
-            if (entity.getId() == id) {
-                entity.setStatus(status);
-                if (ownerNotes != null && !ownerNotes.isEmpty()) {
-                    entity.setOwnerNotes(ownerNotes);
-                }
-                if ("RESOLVED".equalsIgnoreCase(status)) {
-                    entity.setResolvedDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy")));
-                }
-                return convertToDTO(entity);
+        Optional<ComplaintEntity> opt = complaintRepository.findById(id);
+        if (opt.isPresent()) {
+            ComplaintEntity entity = opt.get();
+            entity.setStatus(status);
+            if (ownerNotes != null && !ownerNotes.isEmpty()) {
+                entity.setOwnerNotes(ownerNotes);
             }
+            if ("RESOLVED".equalsIgnoreCase(status)) {
+                entity.setResolvedDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy")));
+            }
+            ComplaintEntity saved = complaintRepository.save(entity);
+            return convertToDTO(saved);
         }
         return null;
     }
 
     public ComplaintDTO convertToDTO(ComplaintEntity entity) {
+        if (entity == null) return null;
         ComplaintDTO dto = new ComplaintDTO();
         dto.setId(entity.getId());
         dto.setTenantId(entity.getTenantId());

@@ -1,15 +1,35 @@
 package com.hostel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "rooms")
 public class RoomEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false, unique = true, length = 50)
     private String roomNumber;
-    private String roomType; // e.g. Single Sharing, Double Sharing, Triple Sharing
+
+    @Column(nullable = false, length = 100)
+    private String roomType;
+
     private double rentAmount;
     private double securityDeposit;
+
+    @Column(nullable = false, length = 50)
     private String status; // AVAILABLE, OCCUPIED, UNDER_MAINTENANCE
+
+    @Column(length = 1000)
     private String amenities;
+
+    @Column(length = 2000)
     private String description;
+
+    @Column(length = 1000)
     private String imageUrl;
+
     private int ownerId;
     private Integer currentTenantId;
     private String currentTenantName;

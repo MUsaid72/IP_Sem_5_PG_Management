@@ -1,12 +1,29 @@
 package com.hostel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "owners")
 public class OwnerEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(length = 20)
     private String phone;
+
+    @Column(nullable = false)
     private String password;
+
     private String hostelName;
+
+    @Column(length = 500)
     private String address;
 
     public OwnerEntity() {
