@@ -5,12 +5,12 @@
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 StayEase is an enterprise-grade full-stack digital Hostel and PG Management System. It enables hostel owners to manage room inventory with real-time occupancy status, process tenant booking applications via a 1-click approval workflow, digitally track monthly rent payments with an integrated financial ledger, and manage tenant complaints from submission to resolution.
 
 ---
 
-## 🏗️ System Architecture
+## ️ System Architecture
 
 StayEase follows a decoupled, full-stack client-server architecture:
 
@@ -39,7 +39,7 @@ StayEase follows a decoupled, full-stack client-server architecture:
 
 ---
 
-## 🎨 Frontend Architecture
+##  Frontend Architecture
 
 The frontend is built as a Single-Page Application (SPA) located in the [`frontend/`](file:///c:/Users/Usaid%20Khan/Documents/IP-Java-Sem5/frontend) directory.
 
@@ -86,7 +86,7 @@ frontend/src/
 
 ---
 
-## 🗄️ Database & Persistence Architecture
+##  Database & Persistence Architecture
 
 StayEase employs **Spring Data JPA** with **Hibernate ORM** to manage data persistence across relational tables.
 
@@ -217,25 +217,3 @@ IP-Java-Sem5/
 ```
 
 ---
-
-## 🚀 Running the Application
-
-### 1. Start the Spring Boot Backend
-```powershell
-cd "c:\Users\Usaid Khan\Documents\IP-Java-Sem5"
-mvn spring-boot:run
-```
-*Access the application at **http://localhost:8080**.*
-
-### 2. (Optional) Run React in Hot-Reload Development Mode
-```powershell
-cd "c:\Users\Usaid Khan\Documents\IP-Java-Sem5\frontend"
-npm run dev
-```
-*Access the Vite dev server at **http://localhost:5173** (API calls automatically proxied to port 8080).*
-
-### 3. Run with In-Memory H2 Database (No MySQL Required)
-```powershell
-mvn spring-boot:run -Dspring-boot.run.profiles=h2
-```
-*Access the H2 SQL Console at **http://localhost:8080/h2-console** (JDBC URL: `jdbc:h2:mem:hosteldb`, User: `sa`, Password: blank).*
